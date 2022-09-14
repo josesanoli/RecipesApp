@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import es.jolusan.appdemo.R
+import es.jolusan.appdemo.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
 
@@ -15,18 +16,32 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: MainFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        setupUI()
+        setupObserver()
     }
+
+    private fun setupUI() {
+        //TODO("Not yet implemented")
+    }
+    
+    private fun setupObserver() {
+        //TODO("Not yet implemented")
+    }
+
+
+
 
 }
