@@ -1,4 +1,4 @@
-package es.jolusan.appdemo.ui.main
+package es.jolusan.appdemo.presentation.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle

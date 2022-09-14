@@ -1,8 +1,9 @@
-package es.jolusan.appdemo
+package es.jolusan.appdemo.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import es.jolusan.appdemo.ui.main.MainFragment
+import es.jolusan.appdemo.R
+import es.jolusan.appdemo.presentation.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
