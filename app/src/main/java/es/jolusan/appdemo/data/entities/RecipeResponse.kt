@@ -19,7 +19,7 @@ data class RecipeResponse (
     @SerializedName("cuisineType")
     val cuisineType: List<String>,
     @SerializedName("dishType")
-    val dishType: List<String>
+    val dishType: List<String>?
 )
 
 fun RecipeResponse.toRecipeDetail(): RecipeDetail = RecipeDetail(
@@ -30,6 +30,6 @@ fun RecipeResponse.toRecipeDetail(): RecipeDetail = RecipeDetail(
     sourceURL = sourceURL,
     ingredientLines = ingredientLines,
     calories = calories,
-    dishType = dishType
+    dishType = dishType ?: listOf()
 )
 

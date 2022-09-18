@@ -18,6 +18,7 @@ import es.jolusan.appdemo.databinding.MainFragmentBinding
 import es.jolusan.appdemo.domain.model.RecipeDetail
 import es.jolusan.appdemo.domain.model.toRecipe
 import es.jolusan.appdemo.utils.ResponseStatus
+import es.jolusan.appdemo.utils.hideKeyboard
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -42,14 +43,20 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        setupObserver()
-        viewModel.getRecipesByWords("eggplant")
     }
 
     private fun setupUI() {
         recipesAdapter = RecipesAdapter(viewModel::onRecipeClicked)
-        binding.recipesRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.recipesRecyclerView.adapter = recipesAdapter
+
+        binding.searchButton.setOnClickListener {
+            hideKeyboard()
+            binding.infoTextView.visibility = View.INVISIBLE
+            setupObserver()
+            viewModel.getRecipesByWords(binding.searchEditText.text.toString())
+        }
+
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun setupObserver() {
@@ -77,8 +84,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun updateRecipesList (recipesDetail: List<RecipeDetail>) {
-        val recipes = recipesDetail.map { recipeDetail -> recipeDetail.toRecipe() }
-        recipesAdapter.recipeList = recipes
+    private fun updateRecipesList (recipesList: List<RecipeDetail>) {
+        if (recipesList.isEmpty()){
+            binding.infoTextView.visibility = View.VISIBLE
+            binding.infoTextView.text = getString(R.string.results_empty)
+        } else {
+            val recipes = recipesList.map { recipeDetail -> recipeDetail.toRecipe() }
+            recipesAdapter.recipeList = recipes
+        }
     }
 }
