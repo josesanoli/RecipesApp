@@ -22,9 +22,9 @@ class RecipeRepositoryImpl @Inject constructor(private val api: RecipeApi) : Rec
             ).hits.map { it.recipe.toRecipeDetail() }
             emit(ResponseStatus.Success(list))
         } catch (e: HttpException) {
-            emit(ResponseStatus.Error((R.string.error_response)))
+            emit(ResponseStatus.Error((R.string.error_generic)))
         } catch (e: IOException) {
-            emit(ResponseStatus.Error((R.string.error_response)))
+            emit(ResponseStatus.Error((R.string.error_generic)))
         }
     }
 }

@@ -1,6 +1,7 @@
 package es.jolusan.appdemo.domain.model
 
 data class RecipeDetail (
+    val id: String,
     val label: String,
     val description: String,
     val imageURL: String,

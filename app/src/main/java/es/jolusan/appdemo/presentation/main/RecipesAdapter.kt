@@ -9,9 +9,10 @@ import es.jolusan.appdemo.domain.model.Recipe
 import es.jolusan.appdemo.utils.loadUrl
 
 class RecipesAdapter(
-    private val listener: (Recipe) -> Unit,
-    private val recipeList: ArrayList<Recipe>
+    private val listener: (Recipe) -> Unit
 ) : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>(){
+
+    var recipeList: List<Recipe> = listOf()
 
     inner class RecipeViewHolder(
         private val binding: RecipeItemBinding
@@ -37,9 +38,4 @@ class RecipesAdapter(
         itemView.setOnClickListener { listener(recipe) }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addData(list: List<Recipe>) {
-        recipeList.addAll(list)
-        notifyDataSetChanged()
-    }
 }

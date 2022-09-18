@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 import es.jolusan.appdemo.domain.model.RecipeDetail
 
 data class RecipeResponse (
+    @SerializedName("uri")
+    val uri: String,
     @SerializedName("label")
     val label: String,
     @SerializedName("image")
@@ -21,6 +23,7 @@ data class RecipeResponse (
 )
 
 fun RecipeResponse.toRecipeDetail(): RecipeDetail = RecipeDetail(
+    id = uri,
     label = label,
     description = cuisineType.joinToString(", ") { it },
     imageURL = imageURL,

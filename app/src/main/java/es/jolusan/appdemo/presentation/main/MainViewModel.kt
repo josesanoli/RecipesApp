@@ -3,6 +3,7 @@ package es.jolusan.appdemo.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import es.jolusan.appdemo.domain.model.Recipe
 import es.jolusan.appdemo.domain.model.RecipeDetail
 import es.jolusan.appdemo.domain.usecases.GetRecipesUseCase
 import es.jolusan.appdemo.utils.ResponseStatus
@@ -25,5 +26,9 @@ class MainViewModel @Inject constructor(
                 _recipes.value = it
             }
         }
+    }
+
+    fun onRecipeClicked(recipe: Recipe) {
+        //_model.value = UiModel.Navigation(hero)
     }
 }
