@@ -6,6 +6,8 @@
     <string name="search_placeholder">Type an ingredient</string>
     <string name="search_button">Search</string>
     <string name="results">Recipes found:</string>
+    <string name="results_empty">No recipes found with that search words</string>
+    <string name="error_response">Could not get recipes now</string>
 
     <!-- Detail Screen -->
     <string name="detail_screen_title">Recipe detail</string>

@@ -7,6 +7,5 @@ data class RecipeDetail (
     val sourceURL: String,
     val ingredientLines: List<String>,
     val calories: Float,
-    val cuisineType: List<String>,
     val dishType: List<String>
 )

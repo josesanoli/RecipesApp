@@ -31,6 +31,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupObserver()
+        viewModel.getRecipesByWords("eggplant")
     }
 
     private fun setupUI() {
