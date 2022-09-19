@@ -88,6 +88,7 @@ class MainFragment : Fragment() {
         if (recipesList.isEmpty()){
             binding.infoTextView.visibility = View.VISIBLE
             binding.infoTextView.text = getString(R.string.results_empty)
+            binding.recipesRecyclerView.visibility = View.GONE
         } else {
             val recipes = recipesList.map { recipeDetail -> recipeDetail.toRecipe() }
             recipesAdapter.recipeList = recipes
