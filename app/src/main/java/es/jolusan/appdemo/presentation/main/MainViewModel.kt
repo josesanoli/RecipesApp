@@ -3,7 +3,6 @@ package es.jolusan.appdemo.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.jolusan.appdemo.domain.model.Recipe
 import es.jolusan.appdemo.domain.model.RecipeDetail
 import es.jolusan.appdemo.domain.usecases.GetRecipesUseCase
 import es.jolusan.appdemo.utils.ResponseStatus
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getRecipesUseCase: GetRecipesUseCase
 ): ViewModel() {
-    private val _recipes = MutableStateFlow<ResponseStatus<List<RecipeDetail>>>(ResponseStatus.Loading())
+    private val _recipes = MutableStateFlow<ResponseStatus<List<RecipeDetail>>>(ResponseStatus.Init())
     val recipes = _recipes.asStateFlow()
 
     fun getRecipesByWords(searchWord: String) {
@@ -28,7 +27,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onRecipeClicked(recipe: Recipe) {
-        //_model.value = UiModel.Navigation(hero)
+    fun onRecipeClicked(recipeId: String): RecipeDetail {
+        _recipes.value.data!!.first { it.id == recipeId }.let { recipeDetail ->
+            return recipeDetail
+        }
     }
 }

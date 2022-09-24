@@ -1,6 +1,5 @@
 package es.jolusan.appdemo.presentation.main
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import es.jolusan.appdemo.R
 import es.jolusan.appdemo.databinding.MainFragmentBinding
@@ -23,10 +21,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = MainFragment()
-    }
 
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: MainFragmentBinding
@@ -43,23 +37,27 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        setupObservers()
     }
 
     private fun setupUI() {
-        recipesAdapter = RecipesAdapter(viewModel::onRecipeClicked)
+        recipesAdapter = RecipesAdapter {
+            navigateToDetail(viewModel.onRecipeClicked(it))
+        }
         binding.recipesRecyclerView.adapter = recipesAdapter
 
         binding.searchButton.setOnClickListener {
+
             hideKeyboard()
             binding.infoTextView.visibility = View.INVISIBLE
-            setupObserver()
             viewModel.getRecipesByWords(binding.searchEditText.text.toString())
         }
 
         binding.progressBar.visibility = View.GONE
+
     }
 
-    private fun setupObserver() {
+    private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.recipes.collect {
@@ -78,6 +76,10 @@ class MainFragment : Fragment() {
                             binding.infoTextView.visibility = View.VISIBLE
                             binding.infoTextView.text = it.messageResource?.let { resource -> getString(resource) } ?: getString(R.string.error_generic)
                         }
+                        is ResponseStatus.Init -> {
+                            binding.progressBar.visibility = View.GONE
+                            binding.infoTextView.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -93,5 +95,10 @@ class MainFragment : Fragment() {
             val recipes = recipesList.map { recipeDetail -> recipeDetail.toRecipe() }
             recipesAdapter.recipeList = recipes
         }
+    }
+
+    private fun navigateToDetail(recipeDetail: RecipeDetail) {
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(recipeDetail)
+        findNavController().navigate(action)
     }
 }

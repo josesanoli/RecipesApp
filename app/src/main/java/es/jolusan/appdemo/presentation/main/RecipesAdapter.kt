@@ -1,6 +1,5 @@
 package es.jolusan.appdemo.presentation.main
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,7 @@ import es.jolusan.appdemo.domain.model.Recipe
 import es.jolusan.appdemo.utils.loadUrl
 
 class RecipesAdapter(
-    private val listener: (Recipe) -> Unit
+    private val listener: (String) -> Unit
 ) : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>(){
 
     var recipeList: List<Recipe> = listOf()
@@ -35,7 +34,7 @@ class RecipesAdapter(
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) = with(holder) {
         val recipe = recipeList[position]
         bind(recipe)
-        itemView.setOnClickListener { listener(recipe) }
+        itemView.setOnClickListener { listener(recipe.id) }
     }
 
 }

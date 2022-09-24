@@ -1,4 +1,6 @@
 package es.jolusan.appdemo.presentation.detail
 
-class DetailViewModel {
+import androidx.lifecycle.ViewModel
+
+class DetailViewModel : ViewModel() {
 }

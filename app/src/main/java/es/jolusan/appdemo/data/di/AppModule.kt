@@ -9,7 +9,9 @@ import es.jolusan.appdemo.data.apiservice.RecipeApi
 import es.jolusan.appdemo.data.repo.RecipeRepositoryImpl
 import es.jolusan.appdemo.domain.repositories.RecipeRepository
 import es.jolusan.appdemo.utils.Constants
-import okhttp3.*
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
