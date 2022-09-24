@@ -1,18 +1,14 @@
 package es.jolusan.appdemo.presentation
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
-import es.jolusan.appdemo.databinding.MainActivityBinding
-import android.view.MenuItem
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import es.jolusan.appdemo.R
+import es.jolusan.appdemo.databinding.MainActivityBinding
 import es.jolusan.appdemo.domain.model.RecipeDetail
 import es.jolusan.appdemo.presentation.main.MainFragmentDirections
 
@@ -41,10 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.bookmarks -> {
-                    //TODO go to bookmarks fragment
-                    val action = MainFragmentDirections.actionMainFragmentToDetailFragment(
-                        RecipeDetail("", "", "", "", "", listOf(), 0F, listOf(), listOf())
-                    )
+                    val action = MainFragmentDirections.actionMainFragmentToBookmarksFragment()
                     val navHostFragment =
                         supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                     val navController = navHostFragment.navController
@@ -61,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val menuItem = binding.toolbar.menu.findItem(R.id.bookmarks)
             when (destination.id) {
                 R.id.mainFragment -> menuItem.isVisible = true
-                R.id.detailFragment -> menuItem.isVisible = false
+                R.id.detailFragment, R.id.bookmarksFragment -> menuItem.isVisible = false
             }
         }
     }

@@ -23,7 +23,7 @@
 
 
     <!-- Bookmarks Screen -->
-    <string name="bookmarks_screen_title">Your saved recipes</string>
+    <string name="bookmarks_screen_title">Favorites recipes</string>
     <string name="bookmarks_no_recipes_saved">Not recipes saved</string>
 
 </resources>

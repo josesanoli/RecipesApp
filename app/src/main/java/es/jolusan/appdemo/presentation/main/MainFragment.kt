@@ -47,14 +47,10 @@ class MainFragment : Fragment() {
         binding.recipesRecyclerView.adapter = recipesAdapter
 
         binding.searchButton.setOnClickListener {
-
             hideKeyboard()
             binding.infoTextView.visibility = View.INVISIBLE
             viewModel.getRecipesByWords(binding.searchEditText.text.toString())
         }
-
-        binding.progressBar.visibility = View.GONE
-
     }
 
     private fun setupObservers() {

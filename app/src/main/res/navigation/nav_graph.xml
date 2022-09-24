@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_bookmarksFragment"
+            app:destination="@id/bookmarksFragment" />
     </fragment>
 
     <fragment
@@ -23,5 +26,15 @@
         <argument
             android:name="recipe"
             app:argType="es.jolusan.appdemo.domain.model.RecipeDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookmarksFragment"
+        android:name="es.jolusan.appdemo.presentation.bookmarks.BookmarksFragment"
+        android:label="@string/bookmarks_screen_title"
+        tools:layout="@layout/bookmarks_fragment">
+        <action
+            android:id="@+id/action_bookmarksFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 </navigation>
