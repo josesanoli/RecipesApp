@@ -24,3 +24,7 @@ fun Context.hideKeyboard(view: View) {
 fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url).into(this)
 }
+
+fun String.upperCaseFirst() : String {
+    return replaceFirstChar { it.uppercase() }
+}

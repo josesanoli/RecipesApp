@@ -14,6 +14,13 @@
 
     <!-- Detail Screen -->
     <string name="detail_screen_title">Recipe detail</string>
+    <string name="detail_not_loaded">The recipe could not be loaded</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="calories">Calories: %1$d kcal</string>
+    <string name="source_url">Source: %1$s</string>
+    <string name="favourite_added">This recipe has been added to favorites</string>
+    <string name="favourite_removed">This recipe has been removed from favorites</string>
+
 
     <!-- Bookmarks Screen -->
     <string name="bookmarks_screen_title">Your saved recipes</string>

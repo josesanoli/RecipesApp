@@ -18,6 +18,8 @@ data class RecipeResponse (
     val calories: Float,
     @SerializedName("cuisineType")
     val cuisineType: List<String>,
+    @SerializedName("mealType")
+    val mealType: List<String>,
     @SerializedName("dishType")
     val dishType: List<String>?
 )
@@ -30,6 +32,7 @@ fun RecipeResponse.toRecipeDetail(): RecipeDetail = RecipeDetail(
     sourceURL = sourceURL,
     ingredientLines = ingredientLines,
     calories = calories,
+    mealType = mealType,
     dishType = dishType ?: listOf()
 )
 
