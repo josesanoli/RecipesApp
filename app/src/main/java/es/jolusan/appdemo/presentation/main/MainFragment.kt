@@ -49,6 +49,8 @@ class MainFragment : Fragment() {
         binding.searchButton.setOnClickListener {
             hideKeyboard()
             binding.infoTextView.visibility = View.INVISIBLE
+            recipesAdapter.setNewSearchRecipeList(listOf())
+            binding.recipesRecyclerView.layoutManager?.scrollToPosition(0)
             viewModel.getRecipesByWords(binding.searchEditText.text.toString())
         }
     }
@@ -89,12 +91,14 @@ class MainFragment : Fragment() {
             binding.recipesRecyclerView.visibility = View.GONE
         } else {
             val recipes = recipesList.map { recipeDetail -> recipeDetail.toRecipe() }
-            recipesAdapter.recipeList = recipes
+            recipesAdapter.setNewSearchRecipeList(recipes)
         }
     }
 
-    private fun navigateToDetail(recipeDetail: RecipeDetail) {
-        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(recipeDetail)
-        findNavController().navigate(action)
+    private fun navigateToDetail(recipeDetail: RecipeDetail?) {
+        recipeDetail?.let {
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(recipeDetail)
+            findNavController().navigate(action)
+        }
     }
 }

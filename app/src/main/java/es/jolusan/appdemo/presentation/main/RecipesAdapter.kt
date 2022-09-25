@@ -37,4 +37,9 @@ class RecipesAdapter(
         itemView.setOnClickListener { listener(recipe.id) }
     }
 
+    fun setNewSearchRecipeList (recipes: List<Recipe>){
+        recipeList = recipes
+        notifyDataSetChanged()
+    }
+
 }

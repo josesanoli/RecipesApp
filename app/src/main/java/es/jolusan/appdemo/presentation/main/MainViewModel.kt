@@ -27,9 +27,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onRecipeClicked(recipeId: String): RecipeDetail {
-        _recipes.value.data!!.first { it.id == recipeId }.let { recipeDetail ->
-            return recipeDetail
-        }
+    fun onRecipeClicked(recipeId: String): RecipeDetail? {
+        return _recipes.value.data?.first { it.id == recipeId }
     }
 }

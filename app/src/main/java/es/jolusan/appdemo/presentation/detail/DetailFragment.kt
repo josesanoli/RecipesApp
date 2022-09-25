@@ -9,12 +9,18 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import es.jolusan.appdemo.R
 import es.jolusan.appdemo.databinding.DetailFragmentBinding
 import es.jolusan.appdemo.domain.model.RecipeDetail
+import es.jolusan.appdemo.utils.ResponseStatus
 import es.jolusan.appdemo.utils.loadUrl
 import es.jolusan.appdemo.utils.upperCaseFirst
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -39,6 +45,9 @@ class DetailFragment : Fragment() {
             recipe = args.recipe
         }
         setupUI()
+        setupObservers()
+
+        recipe?.id?.let { viewModel.checkIsFavorite(it) }
     }
 
     private fun setupUI(){
@@ -64,11 +73,42 @@ class DetailFragment : Fragment() {
                     openURL.data = Uri.parse(recipeDetail.sourceURL)
                     startActivity(openURL)
                 }
+
             }
         } ?: run {
             binding.recipeLayout.visibility = View.GONE
             binding.errorTextView.text = getString(R.string.detail_not_loaded)
             binding.errorTextView.visibility = View.VISIBLE
+        }
+
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isFavoriteRecipe.collect {
+                    if (it is ResponseStatus.Success) {
+                        binding.favoriteImage.isChecked = it.data == true
+                        binding.favoriteImage.setOnCheckedChangeListener { _, isChecked ->
+                            manageFavoriteCheck(isChecked)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun manageFavoriteCheck(isChecked: Boolean) {
+        recipe?.let {
+            if (isChecked) {
+                viewModel.addFavorite(it)
+                val snack = Snackbar.make(requireActivity().findViewById(android.R.id.content),getString(R.string.favorite_added),Snackbar.LENGTH_SHORT)
+                snack.show()
+            } else {
+                viewModel.removeFavorite(it.id)
+                val snack = Snackbar.make(requireActivity().findViewById(android.R.id.content),getString(R.string.favorite_removed),Snackbar.LENGTH_SHORT)
+                snack.show()
+            }
         }
     }
 }

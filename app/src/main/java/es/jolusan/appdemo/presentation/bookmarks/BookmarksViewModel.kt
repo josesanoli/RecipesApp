@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.jolusan.appdemo.domain.model.RecipeDetail
+import es.jolusan.appdemo.domain.usecases.GetFavoriteRecipesUseCase
 import es.jolusan.appdemo.utils.ResponseStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,16 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarksViewModel @Inject constructor(
-
+    private val getFavoriteRecipesUseCase: GetFavoriteRecipesUseCase
 ): ViewModel() {
     private val _recipes = MutableStateFlow<ResponseStatus<List<RecipeDetail>>>(ResponseStatus.Init())
     val recipes = _recipes.asStateFlow()
 
     fun getRecipesSavedInDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
-            //getFavoriteRecipesUseCase().collect {
-            //    _recipes.value = it
-            //}
+            getFavoriteRecipesUseCase().collect {
+                _recipes.value = it
+            }
         }
     }
 
