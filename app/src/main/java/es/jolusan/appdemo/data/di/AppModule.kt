@@ -1,14 +1,22 @@
 package es.jolusan.appdemo.data.di
 
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import es.jolusan.appdemo.BuildConfig
+import es.jolusan.appdemo.app.AppDatabase
 import es.jolusan.appdemo.data.apiservice.RecipeApi
+import es.jolusan.appdemo.data.database.RecipesDao
+import es.jolusan.appdemo.data.repo.FavoriteRecipesRepositoryImpl
 import es.jolusan.appdemo.data.repo.RecipeRepositoryImpl
+import es.jolusan.appdemo.domain.repositories.FavoriteRecipesRepository
 import es.jolusan.appdemo.domain.repositories.RecipeRepository
 import es.jolusan.appdemo.utils.Constants
+import es.jolusan.appdemo.utils.Converter
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -20,6 +28,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    private val converter: Converter = Converter()
 
     @Singleton
     @Provides
@@ -65,4 +75,29 @@ object AppModule {
             .build()
             .create(RecipeApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteRecipesRepository(localDB: RecipesDao): FavoriteRecipesRepository {
+        return FavoriteRecipesRepositoryImpl(localDB)
+    }
+
+    @Provides
+    fun provideRecipesDao(appDatabase: AppDatabase): RecipesDao {
+        return appDatabase.recipesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            AppDatabase::class.java,
+            "favorite_recipes_database"
+            )
+            .addTypeConverter(converter)
+            .build()
+    }
+
+
 }

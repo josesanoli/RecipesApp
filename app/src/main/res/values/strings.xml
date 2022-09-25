@@ -18,8 +18,8 @@
     <string name="ingredients">Ingredients:</string>
     <string name="calories">Calories: %1$d kcal</string>
     <string name="source_url">Source: %1$s</string>
-    <string name="favourite_added">This recipe has been added to favorites</string>
-    <string name="favourite_removed">This recipe has been removed from favorites</string>
+    <string name="favorite_added">This recipe has been added to favorites</string>
+    <string name="favorite_removed">This recipe has been removed from favorites</string>
 
 
     <!-- Bookmarks Screen -->
