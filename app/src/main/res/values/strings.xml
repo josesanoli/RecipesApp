@@ -3,7 +3,8 @@
 
     <!-- Main Screen -->
     <string name="main_screen_title">Recipes App</string>
-    <string name="search_placeholder">Type an ingredient</string>
+    <string name="main_screen_search_text">Find recipes by typing one or more ingredients</string>
+    <string name="search_placeholder">Enter ingredients</string>
     <string name="search_button">Search</string>
     <string name="results">Recipes found:</string>
     <string name="results_empty">No recipes found with that search words</string>
