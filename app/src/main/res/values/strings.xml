@@ -11,7 +11,8 @@
 
     <!-- Error messages -->
     <string name="error_generic">Could not get recipes now</string>
-    <string name="error_api_key">Need key from https://www.edamam.com/</string>
+    <string name="error_connection">Could not connect to recipes server</string>
+    <string name="error_api_key">Need API KEY and ID from www.edamam.com</string>
 
     <!-- Detail Screen -->
     <string name="detail_screen_title">Recipe detail</string>

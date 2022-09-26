@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(private val api: RecipeApi) : RecipeRepository {
@@ -20,10 +21,19 @@ class RecipeRepositoryImpl @Inject constructor(private val api: RecipeApi) : Rec
                 searchWords
             ).hits.map { it.recipe.toRecipeDetail() }
             emit(ResponseStatus.Success(list))
-        } catch (e: HttpException) {
-            emit(ResponseStatus.Error((R.string.error_generic)))
-        } catch (e: IOException) {
-            emit(ResponseStatus.Error((R.string.error_generic)))
+        } catch (e: Exception) {
+            emit(ResponseStatus.Error((handleError(e))))
+        }
+    }
+
+    private fun handleError(throwable: Throwable): Int {
+        return when (throwable) {
+            is HttpException -> when (throwable.code()) {
+                401 -> R.string.error_api_key
+                else -> R.string.error_generic
+            }
+            is IOException -> R.string.error_connection
+            else -> R.string.error_generic
         }
     }
 }
