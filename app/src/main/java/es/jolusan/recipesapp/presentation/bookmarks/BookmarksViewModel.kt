@@ -27,8 +27,8 @@ class BookmarksViewModel @Inject constructor(
         }
     }
 
-    fun onRecipeClicked(recipeId: String): RecipeDetail {
-        _recipes.value.data!!.first { it.id == recipeId }.let { recipeDetail ->
+    fun onRecipeClicked(recipeId: String): RecipeDetail? {
+        _recipes.value.data?.first { it.id == recipeId }.let { recipeDetail ->
             return recipeDetail
         }
     }

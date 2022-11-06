@@ -42,8 +42,8 @@ class BookmarksFragment : Fragment() {
     }
 
     private fun setupUI() {
-        recipesAdapter = RecipesAdapter {
-            navigateToDetail(viewModel.onRecipeClicked(it))
+        recipesAdapter = RecipesAdapter { recipeId ->
+            viewModel.onRecipeClicked(recipeId)?.let { navigateToDetail(it) }
         }
         binding.recipesRecyclerView.adapter = recipesAdapter
     }

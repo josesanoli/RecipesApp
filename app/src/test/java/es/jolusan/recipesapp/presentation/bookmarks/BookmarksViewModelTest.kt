@@ -1,7 +1,7 @@
-package es.jolusan.recipesapp.presentation.main
+package es.jolusan.recipesapp.presentation.bookmarks
 
 import es.jolusan.recipesapp.domain.model.RecipeDetail
-import es.jolusan.recipesapp.domain.usecases.GetRecipesUseCase
+import es.jolusan.recipesapp.domain.usecases.GetFavoriteRecipesUseCase
 import es.jolusan.recipesapp.utils.ResponseStatus
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -13,21 +13,20 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class MainViewModelTest {
+class BookmarksViewModelTest {
 
     @MockK
-    private lateinit var getRecipesUseCase: GetRecipesUseCase
+    private lateinit var getFavoriteRecipesUseCase: GetFavoriteRecipesUseCase
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var bookmarksViewModel: BookmarksViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        mainViewModel = MainViewModel(getRecipesUseCase)
+        bookmarksViewModel = BookmarksViewModel(getFavoriteRecipesUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
@@ -37,56 +36,54 @@ class MainViewModelTest {
     }
 
     @Test
-    fun `when enter search word use case returns values then recipes has success values`() = runTest {
+    fun `when get recipes in bookmarks and use case returns values then recipes has success values`() = runTest {
         // Given
-        val searchWord = "test_word"
-        coEvery { getRecipesUseCase(searchWord) } returns flow {
+        coEvery { getFavoriteRecipesUseCase() } returns flow {
             emit(ResponseStatus.Success(listOf(recipe1, recipe1)))
         }
 
         // When
-        mainViewModel.getRecipesByWords(searchWord)
+        bookmarksViewModel.getRecipesSavedInDatabase()
 
         // Then
-        coVerify (exactly = 1){ getRecipesUseCase(searchWord) }
-        coVerify (exactly = 0){ getRecipesUseCase("") }
+        coVerify (exactly = 1){ getFavoriteRecipesUseCase() }
 
-        assert(mainViewModel.recipes.value is ResponseStatus.Success)
-        assert(mainViewModel.recipes.value.data?.size == 2)
+        assert(bookmarksViewModel.recipes.value is ResponseStatus.Success)
+        assert(bookmarksViewModel.recipes.value.data?.size == 2)
     }
 
     @Test
-    fun `when enter search word use case returns empty then recipes has success empty`() {
+    fun `when get favotite recipes use case returns empty then recipes has success empty`() {
         // Given
-        coEvery { getRecipesUseCase("") } returns flow {
+        coEvery { getFavoriteRecipesUseCase() } returns flow {
             emit(ResponseStatus.Success(listOf()))
         }
 
         // When
-        mainViewModel.getRecipesByWords("")
+        bookmarksViewModel.getRecipesSavedInDatabase()
 
         // Then
-        coVerify (exactly = 0){ getRecipesUseCase("searchWord") }
-        coVerify (exactly = 1){ getRecipesUseCase("") }
+        coVerify (exactly = 1){ getFavoriteRecipesUseCase() }
 
-        assert(mainViewModel.recipes.value is ResponseStatus.Success)
-        assert(mainViewModel.recipes.value.data?.isEmpty() == true)
+        assert(bookmarksViewModel.recipes.value is ResponseStatus.Success)
+        assert(bookmarksViewModel.recipes.value.data?.isEmpty() == true)
     }
 
     @Test
     fun `when recipe is tapped return a valid recipe object with this id`() = runTest {
         // Given
-        coEvery { getRecipesUseCase("ingredient") } returns flow {
+        coEvery { getFavoriteRecipesUseCase() } returns flow {
             emit(ResponseStatus.Success(listOf(recipe1, recipe2)))
         }
 
         // When
-        mainViewModel.getRecipesByWords("ingredient")
+        bookmarksViewModel.getRecipesSavedInDatabase()
 
         // Then
-        coVerify (exactly = 1){ getRecipesUseCase("ingredient") }
-        assert(mainViewModel.onRecipeClicked("1") != null)
-        assert(mainViewModel.onRecipeClicked("1")?.id == "1")
+        coVerify (exactly = 1){ getFavoriteRecipesUseCase() }
+        assert(bookmarksViewModel.recipes.value is ResponseStatus.Success)
+        assert(bookmarksViewModel.recipes.value.data?.size == 2)
+        assert(bookmarksViewModel.onRecipeClicked("1")?.id == "1")
     }
 
     private val recipe1 = RecipeDetail(
